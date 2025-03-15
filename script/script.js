@@ -1,4 +1,3 @@
-
 // Modo Oscuro
 const toggleDarkModeButton = document.getElementById('toggleDarkMode');
 const body = document.body;
@@ -13,8 +12,6 @@ if (localStorage.getItem('darkMode') === 'enabled') {
 
 toggleDarkModeButton.addEventListener('click', () => {
     body.classList.toggle('dark-mode');
-    
-    // Guardar el estado del modo oscuro en el localStorage
     if (body.classList.contains('dark-mode')) {
         localStorage.setItem('darkMode', 'enabled');
         toggleDarkModeButton.innerHTML = moonIcon;
@@ -28,11 +25,12 @@ toggleDarkModeButton.addEventListener('click', () => {
 document.getElementById("loginForm").addEventListener("submit", function (e) {
     e.preventDefault();
     const anniversaryDate = document.getElementById("anniversaryDate").value;
-    // Modifica aquí la fecha de tu aniversario - AAAA-MM-DD
-    if (anniversaryDate === "2023-03-20") {
-        // Guardar la fecha de aniversario en localStorage
+    const correctDate = "2025-01-15"; // Fecha correcta en formato AAAA-MM-DD
+
+    if (anniversaryDate === correctDate) {
         localStorage.setItem("anniversaryDate", anniversaryDate);
-        window.location.href = "dashboard.html"; // Redirige al dashboard
+        alert("¡Bienvenida, mi amor! ❤️");
+        window.location.href = "dashboard.html";
     } else {
         document.getElementById("errorMessage").classList.remove("hidden");
     }
@@ -42,39 +40,25 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
 function createHeart() {
     const heart = document.createElement('div');
     heart.classList.add('heart');
-    
-    // Posicionamos el corazón de forma aleatoria en la parte superior
-    heart.style.left = `${Math.random() * 100}vw`;  // Aleatorio en el eje X
-    heart.style.animationDuration = `${Math.random() * 5 + 3}s`;  // Duración aleatoria de la animación
-
+    heart.style.left = `${Math.random() * 100}vw`;
+    heart.style.animationDuration = `${Math.random() * 5 + 3}s`;
     document.body.appendChild(heart);
-
-    // Eliminamos el corazón después de que se haya animado
     setTimeout(() => {
         heart.remove();
     }, 5000);
 }
 
-// Crear corazones de forma continua
 setInterval(createHeart, 200);
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Verifica si Driver.js está cargado
     if (typeof window.driver === 'undefined' || typeof window.driver.js === 'undefined') {
-        console.error('Driver.js no está cargado. Verifica la red o el CDN.');
+        console.error('Driver.js no está cargado.');
         return;
     }
 
-    console.log('Driver.js está listo para usarse.');
-
-    // Verifica si el usuario ya ha visto el tour
-    if (localStorage.getItem('tourVisto') === 'true') {
-        console.log('El usuario ya ha visto el tour.');
-        return; // No mostrar el tour si ya lo ha visto
-    }
+    if (localStorage.getItem('tourVisto') === 'true') return;
 
     const driver = window.driver.js.driver;
-
     const driverObj = driver({
         showProgress: true,
         showButtons: ['next', 'previous'],
@@ -92,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 element: '#anniversaryDate',
                 popover: {
                     title: 'Fecha de Aniversario',
-                    description: 'Ingresa la fecha de tu aniversario en este campo.',
+                    description: 'Ingresa la fecha de nuestro aniversario para continuar.',
                     side: 'top',
                     align: 'center'
                 }
@@ -101,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 element: '#loginForm button',
                 popover: {
                     title: 'Ingresar',
-                    description: 'Haz clic aquí para enviar el formulario y continuar.',
+                    description: 'Haz clic aquí para acceder a la página especial ❤️.',
                     side: 'top',
                     align: 'center'
                 }
@@ -109,12 +93,6 @@ document.addEventListener('DOMContentLoaded', function () {
         ]
     });
 
-    console.log('Pasos del tour definidos.');
-
-    // Iniciar el tour automáticamente cuando la página se carga
     driverObj.drive();
-    console.log('Tour iniciado.');
-
-    // Marcar que el usuario ha visto el tour
     localStorage.setItem('tourVisto', 'true');
 });
